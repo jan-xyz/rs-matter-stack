@@ -400,7 +400,7 @@ where
         attr_id: AttrId,
     ) {
         self.subscriptions
-            .notify_attribute_changed(endpoint_id, cluster_id, attr_id);
+            .notify_attr_changed(endpoint_id, cluster_id, attr_id);
     }
 
     // /// User code hook to get the state of the netif passed to the
@@ -892,5 +892,14 @@ impl DynBase for DummyAttrNotifier {}
 
 impl AttrChangeNotifier for DummyAttrNotifier {
     fn notify_attr_changed(&self, _endpoint_id: EndptId, _cluster_id: ClusterId, _attr_id: AttrId) {
+    }
+
+    fn notify_cluster_changed(&self, _endpoint_id: EndptId, _cluster_id: ClusterId) {
+    }
+
+    fn notify_endpoint_changed(&self, _endpoint_id: EndptId) {
+    }
+
+    fn notify_all_changed(&self) {
     }
 }
