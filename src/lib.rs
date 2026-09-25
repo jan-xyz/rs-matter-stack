@@ -33,6 +33,7 @@ use rs_matter::dm::endpoints::RootHandler;
 use rs_matter::dm::networks::NetChangeNotif;
 use rs_matter::dm::{AttrChangeNotifier, AttrId, ClusterId, DataModel, EndptId};
 use rs_matter::error::{Error, ErrorCode};
+use rs_matter::im::subscriptions::Subscriptions;
 use rs_matter::im::{InteractionModel, InteractionModelState};
 use rs_matter::pairing::qr::QrTextType;
 use rs_matter::persist::{KvBlobStore, KvBlobStoreAccess};
@@ -357,6 +358,15 @@ where
     /// Get a reference to the `Matter` instance.
     pub const fn matter(&self) -> &Matter<'a> {
         &self.matter
+    }
+
+    /// A shared handle to the interaction model's subscription table.
+    ///
+    /// Exposes subscription liveness to the application, e.g. so it can drive
+    /// Matter ICD Check-In messages for registered clients whose subscription
+    /// was lost. See `rs_matter::dm::clusters::icd_mgmt::Icd::send_check_in`.
+    pub fn subscriptions(&self) -> &Subscriptions<MAX_SUBSCRIPTIONS> {
+        self.state.subscriptions()
     }
 
     /// Get a reference to the `Network` instance.
